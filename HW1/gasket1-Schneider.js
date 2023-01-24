@@ -42,7 +42,7 @@ window.onload = function init()
     for ( var i = 0; points.length < NumPoints; ++i ) {
         var j = Math.floor(Math.random() * 3);
         p = add( points[i], vertices[j] );
-        p = scale( 0, p );
+        p = scale( 0.5, p );
         points.push( p );
     }
 
