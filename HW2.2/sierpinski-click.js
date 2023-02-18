@@ -64,6 +64,17 @@ function init() {
         numTimesToSubdivide = parseInt(event.target.value);
     };
 
+    document.getElementById('reset').onclick = function (){
+        x1 = -1;
+        y1 = -1;
+
+        x2 = 0;
+        y2 = 1;
+
+        x3 = 1;
+        y3 = -1;
+    }
+
     canvas.addEventListener("mouseup", function (event) {
         console.log(event.clientX, event.clientY);
         var rect = gl.canvas.getBoundingClientRect();
