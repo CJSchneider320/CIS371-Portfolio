@@ -37,7 +37,7 @@
         // Load Textures
         let floorWidth = 20;
         let floorHeight = 40;
-        let boxWidth = 1;
+        let boxWidth = 0.1;
         let boxHeight = 2;
         let boxDepth = 1;
         let textureLoader = new THREE.TextureLoader();
@@ -72,9 +72,9 @@
             metalness: 0,
             roughness: 1
         });
-        for (let i = 0; i < 14; i++) {
+        for (let i = 0; i < 140; i++) {
             let boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
-            boxMesh.position.set(i - 7, 1, -5);
+            boxMesh.position.set((i * 0.1) - 7, 1, -8);
             boxMesh.receiveShadow = true;
             boxMesh.castShadow = true;
             scene.add(boxMesh);
@@ -104,7 +104,7 @@
         function animate() {
             function animate() {
                 for (let i = 0; i < boxes.length; i++) {
-                    boxes[i].rotateX(Math.PI / (100 + i));
+                    boxes[i].rotateX(Math.PI / (150 + (i * .1)));
                 }
                 requestAnimationFrame(animate);
                 renderer.render(scene, camera);
