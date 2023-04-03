@@ -11,6 +11,7 @@
         }
     </style>
     <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+    <script src="./phaser/dist/phaser.min.js"></script>
     <script type="importmap">
 {
 "imports": {
@@ -29,7 +30,7 @@
         const camera = new THREE.PerspectiveCamera(fov, window.innerWidth /
             window.innerHeight, near, far);
         const renderer = new THREE.WebGLRenderer();
-        
+
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
         renderer.setClearColor(0xFFFFFF);
@@ -101,21 +102,81 @@
         // boxMesh.castShadow = true;
         pointLight.castShadow = true;
 
-        function animate() {
-            function animate() {
-                for (let i = 0; i < boxes.length; i++) {
-                    boxes[i].rotateX(Math.PI / (150 + (i * .1)));
-                }
-                requestAnimationFrame(animate);
-                renderer.render(scene, camera);
-            }
+        const torusGeometry = new THREE.TorusGeometry(3, 1, 16, 100);
+        const torusMaterial = new THREE.MeshStandardMaterial({
+            color: 0xff6347,
+            metalness: 0.5,
+            roughness: 0.5
+        });
+        const torusMesh = new THREE.Mesh(torusGeometry, torusMaterial);
+        torusMesh.position.set(0, 2, -8);
+        scene.add(torusMesh);
 
+        function animate() {
+            torusMesh.rotateY(0.01);
+            for (let i = 0; i < boxes.length; i++) {
+                boxes[i].rotateX(Math.PI / (150 + (i * .1)));
+            }
             requestAnimationFrame(animate);
             renderer.render(scene, camera);
         }
+
         animate();
 
+
     </script>
+
+    <script>
+        const config = {
+            type: Phaser.AUTO,
+            width: window.innerWidth,
+            height: window.innerHeight,
+            parent: 'game',
+            scene: {
+                preload: preload,
+                create: create,
+                update: update
+            }
+        };
+
+        const game = new Phaser.Game(config);
+
+        function preload() {
+            this.load.image('sprite', './sprite.png');
+        }
+
+        let sprite;
+        let cursors;
+
+        function create() {
+            let sprite = this.add.sprite(100, 100, 'sprite');
+            game.physics.startSystem(Phaser.Physics.P2JS)
+
+            game.physics.enable(sprite, Phaser.Physics.P2JS)
+            sprite.body.setCollideWorldBounds(true);
+
+            cursors = this.input.keyboard.createCursorKeys();
+        }
+
+        function update() {
+            if (cursors.left.isDown) {
+                sprite.setVelocityX(-200);
+            } else if (cursors.right.isDown) {
+                sprite.setVelocityX(200);
+            } else {
+                sprite.setVelocityX(0);
+            }
+
+            if (cursors.up.isDown) {
+                sprite.setVelocityY(-200);
+            } else if (cursors.down.isDown) {
+                sprite.setVelocityY(200);
+            } else {
+                sprite.setVelocityY(0);
+            }
+        }
+    </script>
+
 </head>
 
 <body>
